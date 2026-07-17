@@ -58,7 +58,7 @@
 > **Estado original: PENDIENTE** (visión acordada 2026-07-03: "emular miniDSP + Dirac — corrección de
 > sala en serio; construyendo el streamer perfecto").
 > Este doc permite a una sesión futura de Claude ejecutarlo sin releer la conversación.
-> Sala objetivo: **Despacho** — UXX (192.168.86.6) → SMSL A50 Pro (USB, 16/48 máx) → JVC SP-UXJ60.
+> Sala objetivo: **Despacho** — UXX ($STREAMER_IP) → SMSL A50 Pro (USB, 16/48 máx) → JVC SP-UXJ60.
 
 ## Qué emula a qué
 
@@ -139,7 +139,7 @@ Mac (REW + API :4735 + UMIK-1 USB)          UXX (reproducción + DSP)
 - **UI**: botón "Room" + selector de target + "measured <fecha>, ±X dB" + toggle Loudness.
 
 ### Recursos previos REUTILIZABLES (proyecto ReverbBob, mayo 2026)
-- **Spec completa de la REW API ya investigada**: `/Users/albert/.claude/projects/-Users-albert-REW/memory/project_rew_api.md`
+- **Spec completa de la REW API ya investigada**: `~/.claude/projects/-Users-albert-REW/memory/project_rew_api.md`
   — LEERLA al implementar (endpoints exactos: `/measure/playback-mode` file-playback,
   `/measure/file-playback-stimulus`, `/measurements/process-measurements` (vector/RMS average,
   time align), `/eq/house-curve` + `/eq/match-target-settings` + `/measurements/:id/filters`,

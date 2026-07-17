@@ -7,9 +7,22 @@ correct: takes a REW measurement, generates correction filters for all targets
 """
 import json, base64, struct, math, subprocess, sys, time, urllib.request
 
+import os
+def _env():
+    d = {}
+    try:
+        for ln in open(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")):
+            ln = ln.strip()
+            if ln and not ln.startswith("#") and "=" in ln:
+                k, v = ln.split("=", 1); d[k] = v
+    except FileNotFoundError:
+        pass
+    return d
+ENV = _env()
+BASE = os.path.dirname(os.path.abspath(__file__))
 REW = "http://localhost:4735"
-TARGETS_DIR = "/Users/albert/nada/room-correction/targets"
-UXX = "uxx"
+TARGETS_DIR = os.path.join(BASE, "room-correction/targets")
+UXX = ENV.get("STREAMER_HOST", "streamer")
 CORRECT_RANGE = (40, 300)          # C920 mic: solo graves/medios fiables
 MAX_BOOST = 3
 
@@ -110,7 +123,7 @@ def correct(mid, mic_note):
             profile["modes"].append({"freq": f["freq"], "peak_db": round(-f["gain"], 1),
                                      "decay_s": profile["rt60"].get(band) if band else None})
 
-    out = "/Users/albert/nada/room-correction/profile.json"
+    out = os.path.join(BASE, "room-correction/profile.json")
     json.dump(profile, open(out, "w"), indent=1)
     print(f"profile.json: {out}")
     return profile
@@ -143,7 +156,7 @@ def deploy(profile):
     subprocess.run(["ssh", UXX, "mkdir -p ~/.config/camilladsp/targets ~/.config/room-correction"], check=True)
     subprocess.run(["scp", "-q"] + [f"{d}/{t}.yml" for t in profile["targets"]] +
                    [f"{UXX}:.config/camilladsp/targets/"], check=True)
-    subprocess.run(["scp", "-q", "/Users/albert/nada/room-correction/profile.json",
+    subprocess.run(["scp", "-q", os.path.join(BASE, "room-correction/profile.json"),
                     f"{UXX}:.config/room-correction/profile.json"], check=True)
     print("desplegado en uxx: targets/{harman,reference,flat}.yml + profile.json")
 

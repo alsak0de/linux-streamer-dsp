@@ -22,7 +22,7 @@
 
 ## Contexto mínimo (no re-derivar)
 
-- Host: `uxx` (192.168.86.6), Ubuntu Server 24.04 (noble) amd64, usuario `albert`
+- Host: `uxx` ($STREAMER_IP), Ubuntu Server 24.04 (noble) amd64, usuario `$STREAMER_USER`
   (sudo NOPASSWD). Acceso: `ssh uxx` desde el Mac de Albert.
 - MPD ya corre como **servicio de usuario** de albert (`systemctl --user`), puerto **6600**
   (bind 0.0.0.0), música en `/mnt/music` (sshfs **solo lectura montado por albert** —
@@ -63,7 +63,7 @@ sudo systemctl disable --now mympd.service 2>/dev/null || true
 ```
 
 ### 3. Crear el servicio de usuario
-Fichero `~/.config/systemd/user/mympd.service` (usuario albert en uxx):
+Fichero `~/.config/systemd/user/mympd.service` (usuario $STREAMER_USER en uxx):
 ```ini
 [Unit]
 Description=myMPD web UI (user instance)

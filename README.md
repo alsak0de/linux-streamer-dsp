@@ -45,4 +45,6 @@ Fully operational with an uncalibrated mic (correction limited to 40–300 Hz);
 a UMIK-1 is on the way for full-range correction. Configuration files for the streamer
 itself (PipeWire filter-chains, CamillaDSP, systemd units) will be added next.
 
-Secrets (MQTT password, etc.) are placeholder-scrubbed — adapt to your own environment.
+House-specific values (LAN IPs, hostnames, users, MQTT credentials) live in a
+git-ignored `.env` — copy `.env.example`, fill in your own, and read the docs with those
+names in mind. Nothing secret is committed.

@@ -2,7 +2,7 @@
 
 > **Estado: PENDIENTE de implementar** (diseño acordado con Albert 2026-07-03).
 > Objetivo de este doc: que una sesión futura de Claude pueda montarlo sin releer la conversación.
-> Máquina: `uxx` (192.168.86.6, Ubuntu 24.04, usuario albert, sudo NOPASSWD, alias ssh `uxx`).
+> Máquina: `uxx` ($STREAMER_IP, Ubuntu 24.04, usuario $STREAMER_USER, sudo NOPASSWD, alias ssh `uxx`).
 
 ## Idea (decidida por Albert — no re-debatir)
 

@@ -1,6 +1,6 @@
 # Office UXX — Manual de uso
 
-> Streamer del Despacho: **UXX X20** (`uxx` / `office`, 192.168.86.6) → **SMSL A50 Pro** (USB) →
+> Streamer del Despacho: **UXX X20** (`uxx` / `office`, $STREAMER_IP) → **SMSL A50 Pro** (USB) →
 > JVC SP-UXJ60. Ver también [audio-calidad-setup.md](audio-calidad-setup.md) (límites de calidad/formato).
 
 ---
@@ -8,7 +8,7 @@
 ## 1. Cómo escuchar
 
 - **Tu biblioteca (FLAC, lossless real)** → app **MPD Pilot** (o M.A.L.P.) en el iPhone,
-  conectando a `192.168.86.6:6600`. Bit-perfect hasta 16/44.1; hi-res se remuestrea limpio a 16/48
+  conectando a `$STREAMER_IP:6600`. Bit-perfect hasta 16/44.1; hi-res se remuestrea limpio a 16/48
   (techo del DAC por USB).
 - **Spotify** → castea normal desde la app a **"Office-UXX"** (Spotify Connect). Calidad: Vorbis 320
   (Spotify no da lossless a dispositivos de terceros, ver doc de calidad).
@@ -39,7 +39,7 @@
 
 ## 2. Control remoto (API HTTP, para curl / PWA / Atajos de iOS)
 
-Base: `http://uxx.local:8080` (o `http://192.168.86.6:8080`). Sin autenticación (solo LAN).
+Base: `http://uxx.local:8080` (o `http://$STREAMER_IP:8080`). Sin autenticación (solo LAN).
 
 | Endpoint | Qué hace |
 |---|---|
@@ -140,7 +140,7 @@ Funciona en Mac y iPhone; integrable en la PWA como iframe o enlace.
 
 ## 3. Now-playing por MQTT (para la PWA / domótica)
 
-- **Broker**: `aslmini:1883` (usuario `albert` / `<MQTT_PASSWORD>`)
+- **Broker**: `aslmini:1883` (usuario `$STREAMER_USER` / `<MQTT_PASSWORD>`)
 - **Topic**: `home/office-music/now-playing` (retained, se actualiza en cada cambio de canción)
 - **Esquema** (igual que el resto de la casa — Sala 1 en `home/station/now-playing`):
 ```json
@@ -155,14 +155,14 @@ Funciona en Mac y iPhone; integrable en la PWA como iframe o enlace.
 ```
 Comprobar en vivo:
 ```bash
-ssh aslmini "mosquitto_sub -h localhost -u albert -P <MQTT_PASSWORD> -t home/office-music/now-playing -C 1"
+ssh aslmini "mosquitto_sub -h localhost -u $MQTT_USER -P <MQTT_PASSWORD> -t home/office-music/now-playing -C 1"
 ```
 
 ---
 
 ## 4. Servicios (systemd de usuario en `uxx`)
 
-Todos corren como el usuario `albert` (`systemctl --user ...`), con `loginctl enable-linger`
+Todos corren como el usuario `$STREAMER_USER` (`systemctl --user ...`), con `loginctl enable-linger`
 para que arranquen sin necesidad de sesión abierta.
 
 | Servicio | Qué es |
@@ -221,6 +221,6 @@ No hace falta `--platform=linux/amd64` (el UXX ya es x86_64 nativo). El N3350 ti
 
 | Host | Uso |
 |---|---|
-| `uxx` / `office` (192.168.86.6) | el streamer del Despacho |
-| `aslmini` (192.168.86.87) | biblioteca MPD origen + broker MQTT + now-playing Sala 1 |
+| `uxx` / `office` ($STREAMER_IP) | el streamer del Despacho |
+| `aslmini` ($MEDIA_SERVER_IP) | biblioteca MPD origen + broker MQTT + now-playing Sala 1 |
 | `jetson` | domótica "waldo" — dueño del OAuth/Web API de Spotify (misma cuenta) |
